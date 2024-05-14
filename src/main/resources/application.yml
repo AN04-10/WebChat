@@ -1,0 +1,103 @@
+webChat:
+  #名称
+  name: webChat
+  #版本
+  version: 0.0.1
+
+# 开发环境配置
+server:
+  # 服务器的HTTP端口
+  port: 8089
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # 连接数满后的排队数，默认为100
+    accept-count: 1000
+    threads:
+      # tomcat最大线程数，默认为200
+      max: 800
+      # tomcat启动初始化的线程数，默认值10
+      min-spare: 100
+
+# Spring配置
+spring:
+  application:
+    name: power-shop-item
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.33.138:3306/webChat?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 初始连接数
+      initial-size: 5
+      # 最小连接池数量
+      min-idle: 10
+      # 最大连接池数量
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+  data:
+    redis:
+      cluster:
+        nodes:
+            - 192.168.33.138:7001
+            - 192.168.33.138:7002
+            - 192.168.33.138:7003
+            - 192.168.33.138:7004
+            - 192.168.33.138:7005
+            - 192.168.33.138:7006
+        # 数据库索引
+        database: 0
+        # 密码
+        password:
+        # 连接超时时间
+        timeout: 10s
+        lettuce:
+          pool:
+            # 连接池中的最小空闲连接
+            min-idle: 0
+            # 连接池中的最大空闲连接
+            max-idle: 8
+            # 连接池的最大数据库连接数
+            max-active: 8
+            # #连接池最大阻塞等待时间（使用负值表示没有限制）
+            max-wait: -1ms
+  # jackson
+  jackson:
+    #时区
+    time-zone: GMT+8
+    #格式
+    date-format: yyyy-MM-dd HH:ss:mm
+  main:
+    allow-circular-references: true
+  #线程池配置
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 5
+        queue-capacity: 10
+      thread-name-prefix: test-task-
+
+# MyBatis配置
+mybatis:
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath*:mapper/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: assign_id
+
+
+# 日志配置
+logging:
+  level:
+    com/webchat: debug
+    org.springframework: warn
